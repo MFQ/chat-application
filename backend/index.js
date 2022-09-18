@@ -62,6 +62,9 @@ socketIO.on('connection', (socket) => {
 	});
 
 	socket.on("fetchingMessage", ({ roomName, id }) => {
+		console.log(id)
+		console.log(roomName)
+		console.log("____________sessions____________-", sessions)
 		socketIO.to(id)
 			.emit("receivingMessage", { messages:rooms[roomName]})
 	});
@@ -74,6 +77,11 @@ socketIO.on('connection', (socket) => {
 			socketIO.to(receiverUserSessionId)
 			.emit("sendMessageReceiver", { messages: rooms[roomName]});
 		}
+	})
+
+	socket.on("updateSession", ({ username, id }) => {
+		sessions[username] = id;
+		console.log(sessions)
 	})
 
 

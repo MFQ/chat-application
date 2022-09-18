@@ -1,0 +1,16 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  padding-left: 40%;
+  padding-right: 40%;
+
+  input {
+    margin-top: 2%;
+  }
+
+  &-btn {
+    width: 50%;
+    margin-left: 50%;
+    margin-top: 2%;
+  }
+}
