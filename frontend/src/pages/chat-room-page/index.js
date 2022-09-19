@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import ChatRoom from '../../organisms/chat-room';
 import { getRoomName } from "../../extras/utils"
-import { SocketActions } from "../../extras/constants"
+import { SocketActions, loginUrl } from "../../extras/constants"
 
-const { receivingMessage, sendMessageReceiver, fetchingMessage, sendMessage  } 
+const { receivingMessage, sendMessageReceiver, fetchingMessage, sendMessageCons  } 
 = SocketActions
 
 const ChatRoomPage = ({ socket }) => {
@@ -27,7 +27,7 @@ const ChatRoomPage = ({ socket }) => {
   useEffect(() => {
     const {username} = localStorage
     if (!username) {
-      navigate("/login");
+      navigate(loginUrl);
     }
   }, [])
 
@@ -46,7 +46,7 @@ const ChatRoomPage = ({ socket }) => {
       roomName
     }
     setState({newMessage: "", messages: [...state.messages, message]})
-    socket.emit(sendMessage,{...message, roomName})
+    socket.emit(sendMessageCons,{...message, roomName})
   }
 
   return <div>

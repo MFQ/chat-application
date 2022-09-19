@@ -15,12 +15,12 @@ import {
   LOGIN_ERROR
 } from "../../actions";
 
-import { SocketActions } from "../../extras/constants"
+import { SocketActions, MissingCredentials } from "../../extras/constants"
 import { loginInitalState } from "../../initalStates";
 import { loginReducer } from "../../reducers";
 
 const LoginPageClassName = "login-page"
-const { sendLogin, loginSuccessful, loginFailed } = SocketActions
+const { sendLogin, loginSuccessful, loginFailed, joinUril } = SocketActions
 
 const LoginPage = ({ socket }) => {
 
@@ -31,7 +31,7 @@ const LoginPage = ({ socket }) => {
   const setPassword = el => dispatch({ type: ENTER_PASSWORD, payload: { password: el.target.value } })
   const loginUser = () => {
     if(isEmpty(username) || isEmpty(password)) {
-      dispatch({ type: LOGIN_ERROR, payload: { errors: ["missing username or password"] } })
+      dispatch({ type: LOGIN_ERROR, payload: { errors: [MissingCredentials] } })
     } else {
       socket.emit(sendLogin, { username, password, id: socket.id }, 
         () =>  dispatch({ type: SEND_LOGINING })
@@ -41,14 +41,14 @@ const LoginPage = ({ socket }) => {
   useEffect(() => {
     const {username} = localStorage
     if (username) {
-      navigate("/connectedusers");
+      navigate(joinUril);
     }
   }, [])
 
 
   socket.on(loginSuccessful, (soc) => {
     localStorage.setItem("username", username);
-    navigate("/connectedusers");
+    navigate(joinUril);
     dispatch({type: LOGINING_COMPLETE});
   });
 

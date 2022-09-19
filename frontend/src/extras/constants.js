@@ -15,11 +15,20 @@ const SocketActions = {
   receivingMessage: "receivingMessage",
   sendMessageReceiver: "sendMessageReceiver",
   fetchingMessage: "fetchingMessage",
-  sendMessage: "sendMessage"
-
-
+  sendMessageCons: "sendMessage"
 }
 
+const loginUrl = "/login";
+const chatroomUrl = "/chatroom";
+const joinUril = "/connectedusers";
+const UnableToFindUser = "Unable to find User";
+const MissingCredentials = "missing username or password";
+
 export {
-  SocketActions
+  SocketActions,
+  loginUrl,
+  chatroomUrl,
+  UnableToFindUser,
+  MissingCredentials,
+  joinUril
 }

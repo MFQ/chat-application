@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ConnectedUser from "../../organisms/connected-user";
-import { SocketActions } from "../../extras/constants"
+import { SocketActions, chatroomUrl, loginUrl, UnableToFindUser } from "../../extras/constants"
 
 const { joined, userNotFound, joinChatRoom } = SocketActions;
 
@@ -18,17 +18,17 @@ const ConnectedUserPage = ({ socket }) => {
     useEffect(() => {
       const {username} = localStorage
       if (!username) {
-        navigate("/login");
+        navigate(loginUrl);
       }
     }, [])
     
   socket.on(joined, (d) => {
     localStorage.setItem("currentReceiver", selectUser)
     setError("");
-    navigate("/chatroom")
+    navigate(chatroomUrl)
   });
 
-  socket.on(userNotFound, (d) => setError("Unable to find User"));
+  socket.on(userNotFound, (d) => setError(UnableToFindUser));
 
   return <ConnectedUser 
     selectUser={selectUser}
