@@ -43,6 +43,7 @@ const ChatRoomPage = ({ socket }) => {
       message: newMessage,
       receiver: currentReceiver,
       sender: currentUser,
+      createdAt: new Date(),
       roomName
     }
     setState({newMessage: "", messages: [...state.messages, message]})
