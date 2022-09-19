@@ -1,13 +1,15 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 
 import ChatRoom from '../../organisms/chat-room';
-import { getRoomName } from "../../utils"
+import { getRoomName } from "../../extras/utils"
+import { SocketActions } from "../../extras/constants"
+
+const { receivingMessage, sendMessageReceiver, fetchingMessage, sendMessage  } 
+= SocketActions
 
 const ChatRoomPage = ({ socket }) => {
 
-  // const userContextData = useContext(UserContext)
-  // const { currentUser, currentReceiver } = userContextData;
   const navigate = useNavigate();
   const currentUser = localStorage.getItem("username");
   const currentReceiver = localStorage.getItem("currentReceiver")
@@ -17,12 +19,10 @@ const ChatRoomPage = ({ socket }) => {
     newMessage: ""
   })
   const { newMessage } = state;
-  const messageRecivers = ({messages}) =>{
-    console.log("_____________messages_", messages)
-    setState({ newMessage: "", messages })
-  }
-  socket.on("receivingMessage", messageRecivers)
-  socket.on("sendMessageReceiver", messageRecivers)
+  const messageRecivers = ({messages}) => setState({ newMessage: "", messages })
+  
+  socket.on(receivingMessage, messageRecivers)
+  socket.on(sendMessageReceiver, messageRecivers)
 
   useEffect(() => {
     const {username} = localStorage
@@ -33,8 +33,7 @@ const ChatRoomPage = ({ socket }) => {
 
   useEffect(() => {
     const {sessionId} = localStorage;
-    console.log("_____________",localStorage)
-    socket.emit("fetchingMessage", { roomName, id: sessionId })
+    socket.emit(fetchingMessage, { roomName, id: sessionId })
   }, [])
 
   const typeNewMessage = el => setState({...state, newMessage: el.target.value})
@@ -47,7 +46,7 @@ const ChatRoomPage = ({ socket }) => {
       roomName
     }
     setState({newMessage: "", messages: [...state.messages, message]})
-    socket.emit("sendMessage",{...message, roomName})
+    socket.emit(sendMessage,{...message, roomName})
   }
 
   return <div>

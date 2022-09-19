@@ -21,7 +21,9 @@ socketIO.on('connection', (socket) => {
 	console.log("connected!!");
 
 	socket.on("sendLogin", ({username, password, id}) => {
-		const loggedInUser = users.find( u => username === u.username && u.password === password )
+		const loggedInUser = users.find( 
+			u => username === u.username && u.password === password 
+		)
 		if (loggedInUser) {
 				socketIO.to(id)
 					.emit("loginSuccessful", { loginStatus: true })
@@ -69,8 +71,8 @@ socketIO.on('connection', (socket) => {
 			.emit("receivingMessage", { messages:rooms[roomName]})
 	});
 
-	socket.on("sendMessage", ({sender, receiver, message, roomName, id}) => {
-		const newMessage = { sender, receiver, message }
+	socket.on("sendMessage", ({sender, receiver, message, roomName, id, createdAt}) => {
+		const newMessage = { sender, receiver, message, createdAt }
 		rooms[roomName] = rooms[roomName] ? [...rooms[roomName], newMessage] : [newMessage];
 		const receiverUserSessionId = sessions[receiver]
 		if (receiverUserSessionId) {
@@ -82,6 +84,11 @@ socketIO.on('connection', (socket) => {
 	socket.on("updateSession", ({ username, id }) => {
 		sessions[username] = id;
 		console.log(sessions)
+	})
+
+	socket.on("logout", ({username}) => {
+		delete sessions[username]
+		console.log("_______________session___", sessions)
 	})
 
 
