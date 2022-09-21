@@ -5,17 +5,14 @@ const sendLogin = ({socket, db, socketIO}) => {
 			u => username === u.username && u.password === password 
 		)
 
-    console.log("___________-login user", loggedInUser, id)
-
 		if (loggedInUser) {
 				socketIO.to(id)
-					.emit("loginSuccessful", { loginStatus: true })
+					.emit("loginSuccessful", { loginStatus: true, username })
 				sessions[username] = id
 		}
 		else 
 			socketIO.to(id)
 				.emit("loginFailed", { loginStatus: false })
-		console.log("____________session________", sessions)
 	});
 }
 
