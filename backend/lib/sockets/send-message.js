@@ -1,8 +1,5 @@
-const sendMessage = ({socket, db, socketIO}) => {
-
-  const { rooms, sessions } = db;
-
-  socket.on("sendMessage", ({sender, receiver, message, roomName, id, createdAt}) => {
+const sendMessage = ({socket, db: { rooms, sessions }, socketIO}) => 
+	socket.on("sendMessage", ({sender, receiver, message, roomName, id, createdAt}) => {
 		const newMessage = { sender, receiver, message, createdAt }
 		rooms[roomName] = rooms[roomName] ? [...rooms[roomName], newMessage] : [newMessage];
 		const receiverUserSessionId = sessions[receiver]
@@ -11,6 +8,6 @@ const sendMessage = ({socket, db, socketIO}) => {
 		}
 	})
 
-}
+
 
 module.exports = sendMessage;

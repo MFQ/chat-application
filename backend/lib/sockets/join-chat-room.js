@@ -2,11 +2,8 @@
 
 const { getRoomName } = require("../../common/utils")
 
-const joinChatRoom = ({ socket, db, socketIO }) => {
-
-  const { rooms, users } = db;
-
-  socket.on("joinChatRoom", ({ 
+const joinChatRoom = ({ socket, db: { rooms, users }, socketIO }) => 
+	socket.on("joinChatRoom", ({ 
 		selectUser, id, currentUsername
 	}) => {
 		const user = users.find( u => selectUser === u.username );
@@ -33,6 +30,6 @@ const joinChatRoom = ({ socket, db, socketIO }) => {
 				.emit("userNotFound", { status: false })
 		}
 	});
-}
+
 
 module.exports = joinChatRoom

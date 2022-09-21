@@ -1,5 +1,4 @@
-const sendLogin = ({socket, db, socketIO}) => {
-  const { users, sessions } = db;
+const sendLogin = ({socket, db: { users, sessions }, socketIO}) => 
   socket.on("sendLogin", ({username, password, id}) => {
 		const loggedInUser = users.find( 
 			u => username === u.username && u.password === password 
@@ -14,6 +13,6 @@ const sendLogin = ({socket, db, socketIO}) => {
 			socketIO.to(id)
 				.emit("loginFailed", { loginStatus: false })
 	});
-}
+
 
 module.exports = sendLogin
