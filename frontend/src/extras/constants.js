@@ -20,7 +20,8 @@ const SocketActions = {
 
 const loginUrl = "/login";
 const chatroomUrl = "/chatroom";
-const joinUril = "/connectedusers";
+const joinUrl = "/connectedusers";
+
 const UnableToFindUser = "Unable to find User";
 const MissingCredentials = "missing username or password";
 
@@ -30,5 +31,5 @@ export {
   chatroomUrl,
   UnableToFindUser,
   MissingCredentials,
-  joinUril
+  joinUrl
 }

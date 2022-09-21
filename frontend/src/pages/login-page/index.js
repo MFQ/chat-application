@@ -15,12 +15,12 @@ import {
   LOGIN_ERROR
 } from "../../actions";
 
-import { SocketActions, MissingCredentials } from "../../extras/constants"
+import { SocketActions, MissingCredentials, joinUrl } from "../../extras/constants"
 import { loginInitalState } from "../../initalStates";
 import { loginReducer } from "../../reducers";
 
 const LoginPageClassName = "login-page"
-const { sendLogin, loginSuccessful, loginFailed, joinUril } = SocketActions
+const { sendLogin, loginSuccessful, loginFailed } = SocketActions
 
 const LoginPage = ({ socket }) => {
 
@@ -41,15 +41,14 @@ const LoginPage = ({ socket }) => {
   useEffect(() => {
     const {username} = localStorage
     if (username) {
-      navigate(joinUril);
+      navigate(joinUrl);
     }
   }, [])
 
-
   socket.on(loginSuccessful, (soc) => {
-    localStorage.setItem("username", username);
-    navigate(joinUril);
-    dispatch({type: LOGINING_COMPLETE});
+    dispatch({type: LOGINING_COMPLETE, payload: { username: soc.username}});
+    localStorage.setItem("username", soc.username);
+    navigate(joinUrl);
   });
 
   socket.on(loginFailed, (soc) => {
