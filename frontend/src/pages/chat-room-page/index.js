@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 
 import ChatRoom from '../../organisms/chat-room';
-import { getRoomName } from "../../extras/utils"
-import { SocketActions, loginUrl } from "../../extras/constants"
+import { getRoomName } from "../../common/utils"
+import { SocketActions, loginUrl } from "../../common/constants"
 
 const { receivingMessage, sendMessageReceiver, fetchingMessage, sendMessageCons  } 
 = SocketActions
@@ -24,12 +24,11 @@ const ChatRoomPage = ({ socket }) => {
   socket.on(receivingMessage, messageRecivers)
   socket.on(sendMessageReceiver, messageRecivers)
 
-  useEffect(() => {
-    const {username} = localStorage
-    if (!username) {
+  useEffect(() => { 
+    if (!currentUser) {
       navigate(loginUrl);
     }
-  }, [])
+  }, [currentUser])
 
   useEffect(() => {
     const {sessionId} = localStorage;

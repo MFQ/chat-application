@@ -15,7 +15,8 @@ import {
   LOGIN_ERROR
 } from "../../actions";
 
-import { SocketActions, MissingCredentials, joinUrl } from "../../extras/constants"
+import { SocketActions, MissingCredentials, joinUrl } from "../../common/constants"
+import { setUsernameLocal } from '../../common/utils';
 import { loginInitalState } from "../../initalStates";
 import { loginReducer } from "../../reducers";
 
@@ -27,6 +28,7 @@ const LoginPage = ({ socket }) => {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(loginReducer, loginInitalState);
   const { username, password } = state;
+
   const setUsername = el => dispatch({ type: ENTER_USERNAME, payload: { username: el.target.value } })
   const setPassword = el => dispatch({ type: ENTER_PASSWORD, payload: { password: el.target.value } })
   const loginUser = () => {
@@ -37,17 +39,17 @@ const LoginPage = ({ socket }) => {
         () =>  dispatch({ type: SEND_LOGINING })
       )
     }
+  
   }
   useEffect(() => {
-    const {username} = localStorage
-    if (username) {
+    if (localStorage.getItem("username")) {
       navigate(joinUrl);
     }
   }, [])
 
   socket.on(loginSuccessful, (soc) => {
-    dispatch({type: LOGINING_COMPLETE, payload: { username: soc.username}});
-    localStorage.setItem("username", soc.username);
+    dispatch({type: LOGINING_COMPLETE, payload: { username: soc.username}});    
+    setUsernameLocal(soc.username)
     navigate(joinUrl);
   });
 

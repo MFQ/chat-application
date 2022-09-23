@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ConnectedUser from "../../organisms/connected-user";
-import { SocketActions, chatroomUrl, loginUrl, UnableToFindUser } from "../../extras/constants"
+import { setCurrentReceiverLocal } from "../../common/utils";
+import { SocketActions, chatroomUrl, loginUrl, UnableToFindUser } from "../../common/constants"
 
 const { joined, userNotFound, joinChatRoom } = SocketActions;
 
@@ -23,7 +24,8 @@ const ConnectedUserPage = ({ socket }) => {
     }, [])
     
   socket.on(joined, (d) => {
-    localStorage.setItem("currentReceiver", selectUser)
+    // localStorage.setItem("currentReceiver", selectUser)
+    setCurrentReceiverLocal(selectUser)
     setError("");
     navigate(chatroomUrl)
   });
